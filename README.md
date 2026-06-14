@@ -1,4 +1,4 @@
-# AegisOne XDR
+# AegisOne
 
 ### AI-Powered Autonomous Detection, Investigation and Response Platform
 
