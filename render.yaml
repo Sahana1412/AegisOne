@@ -1,0 +1,86 @@
+services:
+  # ── Frontend ────────────────────────────────────────────────────────────────
+  - type: web
+    name: aegisone-xdr-frontend
+    runtime: docker
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
+    plan: starter
+    healthCheckPath: /
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: aegisone-xdr-backend
+          property: host
+      - key: NEXT_PUBLIC_WS_URL
+        fromService:
+          type: web
+          name: aegisone-xdr-backend
+          property: host
+
+  # ── Backend API ─────────────────────────────────────────────────────────────
+  - type: web
+    name: aegisone-xdr-backend
+    runtime: docker
+    dockerfilePath: ./docker/Dockerfile.backend
+    dockerContext: .
+    plan: standard
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: aegisone-xdr-db
+          property: connectionString
+      - key: FEATHERLESS_API_KEY
+        sync: false
+      - key: FEATHERLESS_BASE_URL
+        value: https://api.featherless.ai/v1
+      - key: QDRANT_URL
+        sync: false
+      - key: QDRANT_API_KEY
+        sync: false
+      - key: VIRUSTOTAL_API_KEY
+        sync: false
+      - key: ABUSEIPDB_API_KEY
+        sync: false
+      - key: SHODAN_API_KEY
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: GITHUB_SECURITY_REPO
+        sync: false
+      - key: SLACK_BOT_TOKEN
+        sync: false
+      - key: ALLOWED_ORIGINS
+        value: https://aegisone-xdr-frontend.onrender.com
+      - key: PYTHONPATH
+        value: /app
+
+  # ── Background Worker ───────────────────────────────────────────────────────
+  - type: worker
+    name: aegisone-xdr-worker
+    runtime: docker
+    dockerfilePath: ./docker/Dockerfile.backend
+    dockerContext: .
+    plan: starter
+    startCommand: python -m worker.main
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: aegisone-xdr-db
+          property: connectionString
+      - key: FEATHERLESS_API_KEY
+        sync: false
+      - key: QDRANT_URL
+        sync: false
+      - key: QDRANT_API_KEY
+        sync: false
+      - key: PYTHONPATH
+        value: /app
+
+databases:
+  - name: aegisone-xdr-db
+    plan: starter
+    databaseName: aegisone
+    user: aegisone
