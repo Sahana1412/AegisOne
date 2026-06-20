@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@layer base {
+  :root {
+    --background: 220 26% 6%;
+    --foreground: 210 40% 89%;
+    --card: 222 32% 10%;
+    --card-foreground: 210 40% 89%;
+    --popover: 222 32% 10%;
+    --popover-foreground: 210 40% 89%;
+    --primary: 190 100% 50%;
+    --primary-foreground: 220 26% 6%;
+    --secondary: 222 32% 15%;
+    --secondary-foreground: 210 40% 89%;
+    --muted: 222 26% 20%;
+    --muted-foreground: 215 20% 55%;
+    --accent: 190 100% 50%;
+    --accent-foreground: 220 26% 6%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 89%;
+    --border: 222 32% 18%;
+    --input: 222 32% 18%;
+    --ring: 190 100% 50%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-aegis-border;
+  }
+  body {
+    @apply bg-aegis-bg text-aegis-text;
+  }
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #050a14;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1a2d4a;
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #00d4ff33;
+  }
+}
+
+@layer components {
+  .aegis-card {
+    @apply bg-aegis-surface border border-aegis-border rounded-lg;
+  }
+
+  .aegis-glow {
+    box-shadow: 0 0 0 1px rgba(0,212,255,0.2), 0 0 20px rgba(0,212,255,0.08);
+  }
+
+  .severity-critical {
+    @apply text-aegis-critical bg-red-950/40 border-red-800/50;
+  }
+  .severity-high {
+    @apply text-aegis-high bg-orange-950/40 border-orange-800/50;
+  }
+  .severity-medium {
+    @apply text-aegis-medium bg-yellow-950/40 border-yellow-800/50;
+  }
+  .severity-low {
+    @apply text-aegis-low bg-green-950/40 border-green-800/50;
+  }
+  .severity-info {
+    @apply text-aegis-info bg-blue-950/40 border-blue-800/50;
+  }
+
+  .agent-bubble {
+    @apply relative pl-4 border-l-2 border-aegis-accent/30 mb-3 animate-fade-in;
+  }
+
+  .terminal-text {
+    @apply font-mono text-sm text-aegis-accent;
+  }
+
+  .grid-bg {
+    background-image: linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .status-dot {
+    @apply w-2 h-2 rounded-full inline-block;
+  }
+  .status-dot.active {
+    @apply bg-aegis-low animate-pulse;
+  }
+  .status-dot.idle {
+    @apply bg-aegis-muted;
+  }
+  .status-dot.error {
+    @apply bg-aegis-critical animate-pulse;
+  }
+  .status-dot.running {
+    @apply bg-aegis-accent animate-pulse;
+  }
+}
